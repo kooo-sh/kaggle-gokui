@@ -4,6 +4,7 @@ log.log
 
 # jupyter checkpoint
 opt/.ipynb_checkpoints/
+opt/chapter3/.ipynb_checkpoints/
 
 # data
 opt/chapter3/dogs_vs_cats/
