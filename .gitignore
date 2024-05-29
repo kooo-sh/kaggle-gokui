@@ -1,6 +1,13 @@
+# setting
 .devcontainer/
 .vscode/
 log.log
+opt/.bash_history
+opt/.cache/
+opt/.jupyter/
+opt/.local/
+opt/.python_history
+opt/chapter3/__pycache__/
 
 # jupyter checkpoint
 opt/.ipynb_checkpoints/
