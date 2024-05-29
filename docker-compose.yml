@@ -1,0 +1,13 @@
+version: '3'
+services:
+  python3:
+    restart: always
+    build: .
+    image: kaggle-gokui:latest
+    container_name: 'python3-container2'
+    working_dir: '/root/'
+    tty: true
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./opt:/root/opt
