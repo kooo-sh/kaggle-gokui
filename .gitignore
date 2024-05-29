@@ -1,0 +1,16 @@
+.devcontainer/
+.vscode/
+log.log
+
+# jupyter checkpoint
+opt/.ipynb_checkpoints/
+
+# data
+opt/chapter3/dogs_vs_cats/
+opt/chapter3/dogs-vs-cats-redux-kernels-edition.zip
+
+# global env
+opt/chapter3/requirements_global.txt
+opt/python
+
+
