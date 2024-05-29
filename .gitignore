@@ -2,12 +2,15 @@
 .devcontainer/
 .vscode/
 log.log
+opt/.DS_Store
 opt/.bash_history
 opt/.cache/
 opt/.jupyter/
 opt/.local/
 opt/.python_history
 opt/chapter3/__pycache__/
+opt/chapter3/.DS_Store
+.DS_Store
 
 # jupyter checkpoint
 opt/.ipynb_checkpoints/
