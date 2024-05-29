@@ -24,4 +24,5 @@ opt/chapter3/dogs-vs-cats-redux-kernels-edition.zip
 opt/chapter3/requirements_global.txt
 opt/python
 
-
+# env for gpu
+for_gpu/
