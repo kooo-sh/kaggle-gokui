@@ -17,8 +17,8 @@ def setup_train_val_split(labels, dryrun=False, seed=0):
     train_indices, val_indices = next(splitter.split(x, y))
 
     if dryrun:
-        train_indices = np.random.choice(train_indices, 100, replace=False)
-        val_indices = np.random.choice(val_indices, 100, replace=False)
+        train_indices = np.random.choice(train_indices, 500, replace=False)
+        val_indices = np.random.choice(val_indices, 500, replace=False)
 
     return train_indices, val_indices
 
@@ -68,9 +68,9 @@ def setup_train_val_loaders(data_dir, batch_size, dryrun=False):
         batch_size=batch_size,
         shuffle=True,
         drop_last=True,
-        num_workers=2
+        num_workers=8 # 手元の環境の最大値
     )
     val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=batch_size, num_workers=2
+        val_dataset, batch_size=batch_size, num_workers=8 # 手元の環境の最大値
     )
     return train_loader, val_loader
