@@ -1,4 +1,6 @@
 import torchvision
+import torchvision.models as models
+from torchvision.models import ResNet50_Weights, AlexNet_Weights
 import torch
 from make_dataloader import setup_train_val_loaders
 from tqdm import tqdm
@@ -17,6 +19,10 @@ def train_1epoch(model, train_loader, lossfun, optimizer, device):
         loss = lossfun(out, y)
         _, pred = torch.max(out.detach(), 1)
         loss.backward()
+
+        # 勾配のクリッピング
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
         optimizer.step()
 
         total_loss += loss.item() * x.size(0)
@@ -49,7 +55,7 @@ def validate_1epoch(model, val_loader, lossfun, device):
     return avg_acc, avg_loss
 
 
-def train(model, optimizer, train_loader, val_loader, n_epochs, device):
+def train(model, optimizer, train_loader, val_loader, n_epochs, device, is_print):
     lossfun = torch.nn.CrossEntropyLoss()
 
     for epoch in tqdm(range(n_epochs)):
@@ -60,18 +66,26 @@ def train(model, optimizer, train_loader, val_loader, n_epochs, device):
         print(
             f"epoch={epoch}, train loss={train_loss}, train accuracy={train_acc}, val loss={val_loss}, val accuracy={val_acc}"
         )
+        # パラメータの一部を出力して変化を確認
+        if is_print:
+            for name, param in model.named_parameters():
+                if param.requires_grad:
+                    print(f"{name}: {param.data.mean()}")  # 平均値を出力
 
-def train_subsec5(data_dir, batch_size, dryrun=False, device="mps"):
-    model = torchvision.models.resnet50(pretrained=True)
-    model.fc = torch.nn.Linear(model.fc.in_features, 2)
+def train_subsec5(data_dir, batch_size, dryrun=False, device="mps", n_epochs=1, is_print=False):
+    model = models.alexnet(weights=AlexNet_Weights.DEFAULT)
+    # model.fc = torch.nn.Linear(model.fc.in_features, 2)
+    model.classifier[6] = torch.nn.Linear(model.classifier[6].in_features, 2)
+    print(f"Model is on device: {next(model.parameters()).device}")
     model.to(device)
+    print(f"Model is on device: {next(model.parameters()).device}")
 
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     train_loader, val_loader = setup_train_val_loaders(
         data_dir, batch_size, dryrun
     )
     train(
-        model, optimizer, train_loader, val_loader, n_epochs=1, device=device
+        model, optimizer, train_loader, val_loader, n_epochs=n_epochs, device=device, is_print=is_print
     )
 
     return model
